@@ -85,7 +85,32 @@ export default function (x) {
 
 ---
 
-If you have AMD modules that look like this, where not all dependencies are assigned to parameters but accessed in the module using `require`, `amdtoes6` will have to create some variable names. You wil probably want to change these.
+If you have AMD modules that use static synchronous `require` calls (not buried in functions or conditionals), they will be transformed just as normal modules with dependencies.
+
+**AMD**
+```js
+define(function(require) {
+   var a = require('path/to/a');
+   var b = require('path/to/b');
+
+    return function (x) {
+        return a(b(x));
+    };
+});
+
+**ES6**
+```js
+import a from 'path/to/a';
+import b from 'path/to/b';
+
+export default function (x) {
+    return a(b(x));
+};
+```
+
+---
+
+If you have AMD modules where not all dependencies are assigned to parameters, and are accessed using `require` in a non-statically analyzable way (within functions or conditionals), `amdtoes6` will have to create some variable names. You wil probably want to change these.
 
 **AMD**
 ```js
@@ -164,6 +189,8 @@ import b from 'path/to/b';
     -o --out <dirname>  If using the --dir option this specifies the output directory.
     -i --ignore <glob>  If using the --dir options this specifies to exclude eg. libs/**/*
     -b --beautify       Run the output through jsbeautify (mainly useful for fixing indentation)
+    -l --logicalName    Use logical path name when inserting variables for
+                        imports (e.g. use 'zap' as name for 'foo/bar/zap.js')
 
 ```
 

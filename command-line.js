@@ -19,6 +19,9 @@ program
     .option('-b --beautify',
             'Run the output through jsbeautify (mainly useful for fixing indentation)',
             false)
+    .option('-l --logicalName',
+            'Use module logical path for newly named imports',
+            false)
     .parse(process.argv);
 
 if (program.dir && !program.out) {
@@ -69,7 +72,8 @@ inputFiles.forEach(function (srcFile) {
 
     try {
         compiled = amdtoes6(context, {
-            beautify: program.beautify
+            beautify: program.beautify,
+            logicalName: program.logicalName
         });
     }
     catch (e) {
