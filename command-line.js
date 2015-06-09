@@ -3,7 +3,7 @@ var glob = require('glob');
 var path = require('path');
 var fs = require('fs');
 var amdtoes6 = require('./index');
-var mkdirp = require('mkdirp')
+var mkdirp = require('mkdirp');
 
 program
     .option('-d --dir <dirname>',
@@ -22,6 +22,11 @@ program
     .option('-l --logicalName',
             'Use module logical path for newly named imports',
             false)
+    .option('-e --ext <types>',
+            'Extensions, separated by commas',
+            function (val) {
+                return val && val.split(',');
+            })
     .parse(process.argv);
 
 if (program.dir && !program.out) {
@@ -42,8 +47,9 @@ if (!program.dir && !program.args.length) {
 var inputFiles = program.args;
 
 if (program.dir) {
+    var exts = program.ext || ['.js'];
 
-    inputFiles = glob.sync('**/*.js', {
+    inputFiles = glob.sync('**/*@(' + exts.join('|') + ')', {
         cwd: program.dir
     });
 

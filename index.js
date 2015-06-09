@@ -24,7 +24,7 @@ function convert (source, options) {
         makeLogicalImportName :
         makeImportName;
 
-    var result = falafel(source, function (node) {
+    var result = falafel(source, { plugins: { jsx: true } }, function (node) {
 
         if (isNamedDefine(node)) {
             throw new Error('Found a named define - this is not supported.');
