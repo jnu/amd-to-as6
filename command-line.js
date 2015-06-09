@@ -83,7 +83,7 @@ inputFiles.forEach(function (srcFile) {
         });
     }
     catch (e) {
-        console.error('Unable to compile ' + filePath + '.\n  Error:  ' + e.message + '\n');
+        console.error('[ERROR] ' + filePath + ' - Unable to compile. Reason: ' + e.message);
         return;
     }
 
